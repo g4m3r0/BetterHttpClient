@@ -8,25 +8,56 @@ namespace BetterHttpClient.CheckService
     {
         public override bool IsProxyAnonymous(Proxy proxy)
         {
+            HttpClient client = new HttpClient(proxy, Encoding.UTF8) {
+                NumberOfAttempts = NumberOfAttempts
+            };
+
+            string page = null;
+
+            try {
+                page = client.Get("http://proxyjudge.info/");
+            } catch (WebException) {
+                proxy.IsOnline = false;
+            }
+
+            if (page == null) {
+                return false;
+            }
+
+            if (page.Contains("<title>Proxyjudge.info</title>") && !page.Contains(MyIp)) {
+                return true;
+            }
+              
+            return false;
+        }
+
+        public override bool IsProxyBlacklisted(Proxy proxy)
+        {
+            return false;
+        }
+
+        public override bool IsProxyGooglePass(Proxy proxy)
+        {
             HttpClient client = new HttpClient(proxy, Encoding.UTF8)
             {
                 NumberOfAttempts = NumberOfAttempts
             };
+
             string page = null;
 
-            try
-            {
+            try {
                 page = client.Get("http://proxyjudge.info/");
-            }
-            catch (WebException)
-            {
+            } catch (WebException) {
                 proxy.IsOnline = false;
             }
 
-            if (page == null)
+            if (page == null) {
                 return false;
-            if (page.Contains("<title>Proxyjudge.info</title>") && !page.Contains(MyIp))
+            }
+
+            if (page.Contains("GWorking")){
                 return true;
+            }
             return false;
         }
 
@@ -36,10 +67,11 @@ namespace BetterHttpClient.CheckService
             string page = client.Get("http://proxyjudge.info/");
 
             Match match = Regex.Match(page, "REMOTE_ADDR = (.*?)\\n");
-            if (!match.Success)
+            if (!match.Success) {
                 throw new GetMyIpException();
-            else
+            } else {
                 return match.Groups[1].Value;
+            }
         }
     }
 }

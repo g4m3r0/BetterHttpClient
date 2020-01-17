@@ -10,6 +10,15 @@ namespace BetterHttpClient
         private bool _isAnonymous;
         private bool _isChecked = false;
 
+        public string Country { get; set; } = null;
+        public string Status { get; set; } = null;
+        public double Speed { get; set; } = 0;
+        public uint Anonymity { get; set; } = 0;
+        public bool GooglePass { get; set; } = false;
+        public bool Blacklisted { get; set; } = false;
+        public uint DownCount { get; set; } = 0;
+        public uint UpCount { get; set; } = 0;
+
         /// <summary>
         /// Check if proxy is busy.
         /// </summary>

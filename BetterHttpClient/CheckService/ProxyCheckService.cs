@@ -31,6 +31,16 @@ namespace BetterHttpClient.CheckService
         /// <returns></returns>
         public abstract bool IsProxyAnonymous(Proxy proxy);
         /// <summary>
+        /// Abstract method. Should return true if proxy is blacklisted.
+        /// </summary>
+        /// <returns></returns>
+        public abstract bool IsProxyBlacklisted(Proxy proxy);
+        /// <summary>
+        /// Abstract method. Should return true if proxy passed the google test
+        /// </summary>
+        /// <returns></returns>
+        public abstract bool IsProxyGooglePass(Proxy proxy);
+        /// <summary>
         /// Abstract method. Should return real ip addres of user (so without any proxy).
         /// </summary>
         /// <returns></returns>
